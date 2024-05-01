@@ -1,0 +1,53 @@
+<!-- FORMULÁRIO -->
+<form [formGroup]="formulario">
+
+  <input type="hidden" class="form-control" readonly formControlName="id">
+  <!--Nome -->
+  @if (formulario.get('nome').hasError('required') && formulario.get('nome').touched) {
+    <p class="alert alert-warning">O campo nome é obrigatório</p>
+  }
+  @if (formulario.get('nome').hasError('minlength') && formulario.get('nome').touched) {
+    <p class="alert alert-warning">O campo nome precisa ter no minimo 6 caracteres</p>
+  }
+  <input type="text"   class="form-control" placeholder="Nome" formControlName="nome">
+  <!--Nome -->
+  @if (formulario.get('valor').hasError('required') && formulario.get('valor').touched) {
+    <p class="alert alert-warning">O campo valor é obrigatório</p>
+  }
+  @if (formulario.get('valor').hasError('min') && formulario.get('valor').touched) {
+    <p class="alert alert-warning">O campo valor não pode ser inferior a 0</p>
+  }
+  <input type="number" class="form-control" placeholder="Valor" formControlName="valor">
+
+  <input type="button" class="btn btn-primary" value="Cadastrar" *ngIf="btnCadastrar" (click)="cadastrar()" [disabled]="
+    formulario.get('nome').hasError('required') || formulario.get('nome').hasError('minlength')
+    || formulario.get('valor').hasError('required') || formulario.get('valor').hasError('min')">
+  <input type="button" class="btn btn-primary" value="Alterar"  *ngIf="!btnCadastrar" (click)="alterar()" [disabled]="
+         formulario.get('nome').hasError('required') || formulario.get('nome').hasError('minlength')
+  || formulario.get('valor').hasError('required') || formulario.get('valor').hasError('min')">
+  <input type="button" class="btn btn-primary" value="Remover" *ngIf="!btnCadastrar" (click)="remover()">
+</form>
+
+<!-- PESQUISA -->
+<input type="text" placeholder="Qual produto está procurando?" class="form-control pesquisa" [(ngModel)]="termoPesquisado">
+
+<!-- TABELA -->
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Nome</th>
+    <th>Valor</th>
+    <th>Selecionar</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let v of vetor ; let indice = index">
+    <td>{{indice + 1}}</td>
+    <td>{{v.nome}}</td>
+    <td>{{v.valor}}</td>
+    <td><button class="btn btn-primary" (click)="selecionarProduto(indice)">Selecionar</button></td>
+  </tr>
+  </tbody>
+</table>
