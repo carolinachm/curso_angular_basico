@@ -44,7 +44,7 @@
       </div>
       <div class="modal-footer">
         @if(btnCadastrar){
-        <input type="button" class="btn btn-success" value="Cadastrar" (click)="cadastrar()" [disabled]="
+          <input type="button" class="btn btn-success" value="Cadastrar" (click)="cadastrar()" [disabled]="
           formulario.get('nome').hasError('required')
           || formulario.get('nome').hasError('minlength')
           || formulario.get('idade').hasError('required')
@@ -80,14 +80,81 @@
   </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let v of vetor; index as indice">
-      <td>{{indice + 1}}</td>
-      <td>{{v.nome}}</td>
-      <td>{{v.idade}}</td>
-      <td>{{v.cidade}}</td>
-      <td><button class="btn btn-primary" (click)="selecionar(indice)">Selecionar</button> </td>
-    </tr>
+  <tr *ngFor="let v of vetor; index as indice">
+    <td>{{indice + 1}}</td>
+    <td>{{v.nome}}</td>
+    <td>{{v.idade}}</td>
+    <td>{{v.cidade}}</td>
+    <td><button class="btn btn-primary" (click)="selecionar(indice)"  data-bs-toggle="modal" data-bs-target="#exampleModal2">Selecionar</button> </td>
+  </tr>
   </tbody>
 </table>
 
 
+<!-- MODAL DE EDIÇÃO -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Pessoa</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancelar()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formulario">
+          <!--Nome -->
+          @if (formulario.get('nome').hasError('required') && formulario.get('nome').touched) {
+            <p class="alert alert-warning">O campo nome é obrigatório</p>
+          }
+          @if (formulario.get('nome').hasError('minlength') && formulario.get('nome').touched) {
+            <p class="alert alert-warning">O campo nome precisa ter no minimo 6 caracteres</p>
+          }
+          <input class="form-control" formControlName="nome" type="text" placeholder="nome">
+          <!--Idade-->
+          @if (formulario.get('idade').hasError('required') && formulario.get('idade').touched) {
+            <p class="alert alert-warning">O campo idade é obrigatório</p>
+          }
+          @if (formulario.get('idade').hasError('min') && formulario.get('idade').touched) {
+            <p class="alert alert-warning">O campo idade inferior a 0</p>
+          }
+          @if (formulario.get('idade').hasError('max') && formulario.get('idade').touched) {
+            <p class="alert alert-warning">O campo idade superior a 120</p>
+          }
+          <input class="form-control" formControlName="idade" type="number" placeholder="idade">
+          <!--Cidade-->
+          @if (formulario.get('cidade').hasError('required') && formulario.get('cidade').touched) {
+            <p class="alert alert-warning">O campo cidade é obrigatório</p>
+          }
+          @if (formulario.get('cidade').hasError('minlength') && formulario.get('cidade').touched) {
+            <p class="alert alert-warning">O campo cidade precisa ter no minimo 6 caracteres</p>
+          }
+          <input class="form-control" formControlName="cidade" type="text" placeholder="cidade">
+        </form>
+      </div>
+      <div class="modal-footer">
+        @if(btnCadastrar){
+          <input type="button" class="btn btn-success" value="Cadastrar" (click)="cadastrar()" [disabled]="
+          formulario.get('nome').hasError('required')
+          || formulario.get('nome').hasError('minlength')
+          || formulario.get('idade').hasError('required')
+          || formulario.get('idade').hasError('min')
+          || formulario.get('idade').hasError('max')
+          || formulario.get('cidade').hasError('required')
+          || formulario.get('cidade').hasError('minlenght')">
+        }@else{
+          <input type="button" class="btn btn-primary" value="Alterar" [disabled]="
+          formulario.get('nome').hasError('required')
+          || formulario.get('nome').hasError('minlength')
+          || formulario.get('idade').hasError('required')
+          || formulario.get('idade').hasError('min')
+          || formulario.get('idade').hasError('max')
+          || formulario.get('cidade').hasError('required')
+          || formulario.get('cidade').hasError('minlenght')" (click)="alterar()">
+          <input type="button" class="btn btn-danger" value="Remover" (click)="remover()">
+          <input type="button" class="btn btn-close-white" value="Cancelar" (click)="cancelar()">
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
